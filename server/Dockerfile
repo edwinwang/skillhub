@@ -2,8 +2,14 @@
 FROM eclipse-temurin:21-jdk-alpine AS build
 WORKDIR /app
 
+# Point to a mirror file for faster dependency downloads when Maven Central
+# is slow or blocked. Override with --build-arg MAVEN_SETTINGS=<path> when
+# the default mirror is undesirable (e.g. builds outside mainland China).
+ARG MAVEN_SETTINGS=settings.xml
+
 # Cache dependencies
 COPY pom.xml .
+COPY ${MAVEN_SETTINGS} /root/.m2/settings.xml
 COPY skillhub-domain/pom.xml skillhub-domain/
 COPY skillhub-auth/pom.xml skillhub-auth/
 COPY skillhub-search/pom.xml skillhub-search/
