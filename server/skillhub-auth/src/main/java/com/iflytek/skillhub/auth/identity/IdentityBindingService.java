@@ -2,6 +2,7 @@ package com.iflytek.skillhub.auth.identity;
 
 import com.iflytek.skillhub.auth.entity.IdentityBinding;
 import com.iflytek.skillhub.auth.oauth.OAuthClaims;
+import com.iflytek.skillhub.auth.oauth.OidcGroupNamespaceSyncService;
 import com.iflytek.skillhub.auth.rbac.PlatformPrincipal;
 import com.iflytek.skillhub.auth.rbac.PlatformRoleDefaults;
 import com.iflytek.skillhub.auth.repository.IdentityBindingRepository;
@@ -27,15 +28,18 @@ public class IdentityBindingService {
     private final UserAccountRepository userRepo;
     private final UserRoleBindingRepository roleBindingRepo;
     private final GlobalNamespaceMembershipService globalNamespaceMembershipService;
+    private final OidcGroupNamespaceSyncService oidcGroupNamespaceSyncService;
 
     public IdentityBindingService(IdentityBindingRepository bindingRepo,
                                   UserAccountRepository userRepo,
                                   UserRoleBindingRepository roleBindingRepo,
-                                  GlobalNamespaceMembershipService globalNamespaceMembershipService) {
+                                  GlobalNamespaceMembershipService globalNamespaceMembershipService,
+                                  OidcGroupNamespaceSyncService oidcGroupNamespaceSyncService) {
         this.bindingRepo = bindingRepo;
         this.userRepo = userRepo;
         this.roleBindingRepo = roleBindingRepo;
         this.globalNamespaceMembershipService = globalNamespaceMembershipService;
+        this.oidcGroupNamespaceSyncService = oidcGroupNamespaceSyncService;
     }
 
     @Transactional
@@ -82,6 +86,8 @@ public class IdentityBindingService {
             .map(rb -> rb.getRole().getCode())
             .collect(Collectors.toSet());
         roles = PlatformRoleDefaults.withDefaultUserRole(roles);
+
+        oidcGroupNamespaceSyncService.sync(user.getId(), claims.extra());
 
         return new PlatformPrincipal(
             user.getId(), user.getDisplayName(), user.getEmail(),

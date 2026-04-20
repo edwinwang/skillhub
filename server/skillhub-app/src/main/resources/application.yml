@@ -98,6 +98,16 @@ skillhub:
       enabled: ${SKILLHUB_AUTH_DIRECT_ENABLED:false}
     session-bootstrap:
       enabled: ${SKILLHUB_AUTH_SESSION_BOOTSTRAP_ENABLED:false}
+    oidc:
+      # Claim whose value (array or CSV string) carries the upstream group
+      # identifiers that should map into SkillHub namespaces.
+      groups-claim: ${SKILLHUB_AUTH_OIDC_GROUPS_CLAIM:yufu.user.groups}
+      # Map of upstream-group -> namespace-slug. Empty map disables the
+      # sync entirely. Example YAML override:
+      #   skillhub.auth.oidc.namespace-mapping:
+      #     "[dept-engineering]": engineering
+      #     "[dept-product]": product
+      namespace-mapping: {}
     password-reset:
       code-expiry: ${SKILLHUB_AUTH_PASSWORD_RESET_CODE_EXPIRY:PT10M}
       email-from-address: ${SKILLHUB_AUTH_PASSWORD_RESET_FROM_ADDRESS:noreply@skillhub.local}

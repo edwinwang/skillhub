@@ -13,6 +13,7 @@ import com.iflytek.skillhub.auth.entity.UserRoleBinding;
 import com.iflytek.skillhub.auth.oauth.AccountDisabledException;
 import com.iflytek.skillhub.auth.oauth.OAuthClaims;
 import com.iflytek.skillhub.auth.oauth.AccountPendingException;
+import com.iflytek.skillhub.auth.oauth.OidcGroupNamespaceSyncService;
 import com.iflytek.skillhub.auth.rbac.PlatformPrincipal;
 import com.iflytek.skillhub.auth.repository.IdentityBindingRepository;
 import com.iflytek.skillhub.auth.repository.UserRoleBindingRepository;
@@ -46,11 +47,15 @@ class IdentityBindingServiceTest {
     @Mock
     private GlobalNamespaceMembershipService globalNamespaceMembershipService;
 
+    @Mock
+    private OidcGroupNamespaceSyncService oidcGroupNamespaceSyncService;
+
     private IdentityBindingService service;
 
     @BeforeEach
     void setUp() {
-        service = new IdentityBindingService(bindingRepo, userRepo, roleBindingRepo, globalNamespaceMembershipService);
+        service = new IdentityBindingService(bindingRepo, userRepo, roleBindingRepo,
+                globalNamespaceMembershipService, oidcGroupNamespaceSyncService);
     }
 
     @Test
