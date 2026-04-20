@@ -267,16 +267,12 @@ public class SkillDownloadService {
                                    Skill skill,
                                    String currentUserId,
                                    Map<Long, NamespaceRole> userNsRoles) {
-        if (currentUserId == null && !isAnonymousDownloadAllowed(namespace, skill)) {
+        if (currentUserId == null) {
             throw new DomainForbiddenException("error.skill.access.denied", skill.getSlug());
         }
         if (!visibilityChecker.canAccess(skill, currentUserId, userNsRoles)) {
             throw new DomainForbiddenException("error.skill.access.denied", skill.getSlug());
         }
-    }
-
-    private boolean isAnonymousDownloadAllowed(Namespace namespace, Skill skill) {
-        return skill.getVisibility() != SkillVisibility.PRIVATE;
     }
 
     private Skill resolveVisibleSkill(Long namespaceId, String slug, String currentUserId) {
