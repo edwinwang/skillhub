@@ -4,6 +4,7 @@ import com.iflytek.skillhub.domain.event.SkillDownloadedEvent;
 import com.iflytek.skillhub.domain.namespace.Namespace;
 import com.iflytek.skillhub.domain.namespace.NamespaceRepository;
 import com.iflytek.skillhub.domain.namespace.NamespaceRole;
+import com.iflytek.skillhub.domain.namespace.NamespaceType;
 import com.iflytek.skillhub.domain.shared.exception.DomainBadRequestException;
 import com.iflytek.skillhub.domain.shared.exception.DomainForbiddenException;
 import com.iflytek.skillhub.domain.skill.*;
@@ -267,12 +268,17 @@ public class SkillDownloadService {
                                    Skill skill,
                                    String currentUserId,
                                    Map<Long, NamespaceRole> userNsRoles) {
-        if (currentUserId == null) {
+        if (currentUserId == null && !isAnonymousDownloadAllowed(namespace, skill)) {
             throw new DomainForbiddenException("error.skill.access.denied", skill.getSlug());
         }
         if (!visibilityChecker.canAccess(skill, currentUserId, userNsRoles)) {
             throw new DomainForbiddenException("error.skill.access.denied", skill.getSlug());
         }
+    }
+
+    private boolean isAnonymousDownloadAllowed(Namespace namespace, Skill skill) {
+        return namespace.getType() == NamespaceType.GLOBAL
+                && skill.getVisibility() == SkillVisibility.PUBLIC;
     }
 
     private Skill resolveVisibleSkill(Long namespaceId, String slug, String currentUserId) {
