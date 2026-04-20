@@ -35,7 +35,7 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         if (authentication.getPrincipal() instanceof OAuth2User oAuth2User) {
             PlatformPrincipal principal = (PlatformPrincipal) oAuth2User.getAttributes().get("platformPrincipal");
             if (principal != null) {
-                platformSessionService.attachToAuthenticatedSession(principal, authentication, request);
+                platformSessionService.establishSession(principal, request);
             }
         }
         String returnTo = oauthLoginFlowService.consumeReturnTo(request.getSession(false));
