@@ -59,9 +59,9 @@ class VisibilityCheckerTest {
     }
 
     @Test
-    void testNamespaceOnlySkillNotAccessibleByNonMember() {
+    void testNamespaceOnlySkillAccessibleByAnyAuthenticatedUser() {
         boolean canAccess = checker.canAccess(namespaceOnlySkill, OTHER_USER_ID, Map.of());
-        assertFalse(canAccess);
+        assertTrue(canAccess);
     }
 
     @Test
