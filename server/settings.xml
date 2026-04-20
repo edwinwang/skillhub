@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
   Maven settings used inside the Docker build to route dependency downloads
-  through a faster mirror. Overriding this at build time is supported via
-  `docker build --build-arg MAVEN_SETTINGS=<alt-file>`.
+  through a faster mirror. Override by passing a different MAVEN_SETTINGS
+  build argument pointing at an alternate file in the server build context.
 -->
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
