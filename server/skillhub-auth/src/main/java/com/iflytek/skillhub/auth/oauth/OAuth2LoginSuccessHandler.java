@@ -27,6 +27,10 @@ public class OAuth2LoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         this.platformSessionService = platformSessionService;
         this.oauthLoginFlowService = oauthLoginFlowService;
         setDefaultTargetUrl(OAuthLoginRedirectSupport.DEFAULT_TARGET_URL);
+        // Ignore SavedRequest — ExceptionTranslationFilter saves every 401'd
+        // XHR (including /api/web/me/skills), and restoring it post-login
+        // drops the browser onto a raw JSON endpoint instead of the SPA.
+        setAlwaysUseDefaultTargetUrl(true);
     }
 
     @Override
