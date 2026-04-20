@@ -53,9 +53,9 @@ class VisibilityCheckerTest {
     }
 
     @Test
-    void testNamespaceOnlySkillNotAccessibleByAnonymous() {
+    void testNamespaceOnlySkillAccessibleByAnonymous() {
         boolean canAccess = checker.canAccess(namespaceOnlySkill, null, Map.of());
-        assertFalse(canAccess);
+        assertTrue(canAccess);
     }
 
     @Test

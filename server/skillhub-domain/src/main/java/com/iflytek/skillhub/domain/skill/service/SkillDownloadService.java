@@ -4,7 +4,6 @@ import com.iflytek.skillhub.domain.event.SkillDownloadedEvent;
 import com.iflytek.skillhub.domain.namespace.Namespace;
 import com.iflytek.skillhub.domain.namespace.NamespaceRepository;
 import com.iflytek.skillhub.domain.namespace.NamespaceRole;
-import com.iflytek.skillhub.domain.namespace.NamespaceType;
 import com.iflytek.skillhub.domain.shared.exception.DomainBadRequestException;
 import com.iflytek.skillhub.domain.shared.exception.DomainForbiddenException;
 import com.iflytek.skillhub.domain.skill.*;
@@ -277,8 +276,7 @@ public class SkillDownloadService {
     }
 
     private boolean isAnonymousDownloadAllowed(Namespace namespace, Skill skill) {
-        return namespace.getType() == NamespaceType.GLOBAL
-                && skill.getVisibility() == SkillVisibility.PUBLIC;
+        return skill.getVisibility() != SkillVisibility.PRIVATE;
     }
 
     private Skill resolveVisibleSkill(Long namespaceId, String slug, String currentUserId) {

@@ -27,7 +27,7 @@ public class VisibilityChecker {
         }
         return switch (skill.getVisibility()) {
             case PUBLIC -> true;
-            case NAMESPACE_ONLY -> currentUserId != null;
+            case NAMESPACE_ONLY -> true;
             case PRIVATE -> isOwner(skill, currentUserId) || isAdminOrAbove(userNamespaceRoles.get(skill.getNamespaceId()));
         };
     }
