@@ -3,6 +3,8 @@ package com.iflytek.skillhub.auth.entity;
 import jakarta.persistence.*;
 import java.time.Clock;
 import java.time.Instant;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "identity_binding",
@@ -25,6 +27,7 @@ public class IdentityBinding {
     private String loginName;
 
     @Column(name = "extra_json", columnDefinition = "jsonb")
+    @JdbcTypeCode(SqlTypes.JSON)
     private String extraJson;
 
     @Column(name = "created_at", nullable = false, updatable = false)
